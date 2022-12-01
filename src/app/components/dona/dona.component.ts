@@ -8,12 +8,13 @@ import { MultiDataSet, Label, Color } from 'ng2-charts';
   ]
 })
 export class DonaComponent{
-  
+
   @Input() title: string = 'Sin titulo';
 
   @Input('labels') doughnutChartLabels: Label[] = ['Label1', 'Label2', 'Label2'];
   @Input('data') doughnutChartData: MultiDataSet = [
     [350, 450, 100],
+    [265, 780, 373],
   ];
 
   public colors: Color[] = [
