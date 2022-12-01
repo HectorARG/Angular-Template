@@ -8,11 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountSettingsComponent implements OnInit {
 
-  linkTheme = document.querySelector('#theme')
+  linkTheme: Element = document.querySelector('#theme')
+  links: NodeListOf<Element>;
 
   constructor() { }
 
   ngOnInit(): void {
+    this. links = document.querySelectorAll('.selector');
+    this.checkCurrenttheme();
   }
 
   changeTheme(argumento: string): void {
@@ -21,6 +24,22 @@ export class AccountSettingsComponent implements OnInit {
     this.linkTheme.setAttribute('href', url);
 
     localStorage.setItem('theme', url);
+    this.checkCurrenttheme();
+  }
+
+  checkCurrenttheme(): void {
+
+    this.links.forEach(elm => {
+
+      elm.classList.remove('working');
+      const btnTheme = elm.getAttribute('data-theme');
+      const btnThemeUrl = `./assets/css/colors/${ btnTheme }.css`;
+      const currentTheme = this.linkTheme.getAttribute('href');
+
+      if(btnThemeUrl === currentTheme){
+        elm.classList.add('working');
+      }
+    })
   }
 
 }
