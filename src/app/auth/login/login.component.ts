@@ -25,12 +25,12 @@ export class LoginComponent implements AfterViewInit {
 
   constructor( private router: Router,
                private fb: FormBuilder,
-               private loginService: UsuarioService ) { }
+               private loginService: UsuarioService
+            ) { }
 
 
   ngAfterViewInit(): void {
     this.google();
-    console.log(this.googleBtn.nativeElement)
   }
 
   google(){
@@ -39,8 +39,8 @@ export class LoginComponent implements AfterViewInit {
       callback: ( response: any ) => this.handleCredentialResponse(response)
     });
     google.accounts.id.renderButton(
-      // document.getElementById("buttonDiv"),
-      this.googleBtn.nativeElement,
+      document.getElementById("buttonDiv"),
+      // this.googleBtn.nativeElement,
       { theme: "outline", size: "large" }  // customization attributes
     );
   }
@@ -53,16 +53,12 @@ export class LoginComponent implements AfterViewInit {
   }
 
   login(): void {
-
     this.loginService.loginUsuario( this.loginForm.value ).subscribe(res => {
+      this.router.navigateByUrl('/');
       if (this.loginForm.get('remember').value) {
         localStorage.setItem('email', this.loginForm.get('email').value);
-        this.router.navigateByUrl('/');
-
-        // localStorage.setItem('password', this.loginForm.get('password').value);
       }else {
         localStorage.removeItem('email');
-        // localStorage.removeItem('password');
       }
 
     },err => {
@@ -72,11 +68,6 @@ export class LoginComponent implements AfterViewInit {
         'error'
       )
     })
-
-    // console.log( this.loginForm.value );
-
-
-    // this.router.navigateByUrl('/');
   }
 
 }
