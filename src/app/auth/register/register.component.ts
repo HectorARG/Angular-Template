@@ -13,11 +13,11 @@ export class RegisterComponent {
   public formSubmitted: boolean = false;
 
   public registerForm = this.fb.group({
-    nombre: [ null, [ Validators.required, Validators.minLength(3) ], ],
-    email: [ null, [ Validators.required ], ],
-    password: [ null, [ Validators.required ], ],
-    password2: [ null, [ Validators.required ], ],
-    terminos: [false, [ Validators.required ], ],
+    nombre: [ 'Test anyone', [ Validators.required, Validators.minLength(3) ], ],
+    email: [ 'Test20@tests.com', [ Validators.required ], ],
+    password: [ '123456', [ Validators.required ], ],
+    password2: [ '123456', [ Validators.required ], ],
+    terminos: [true, [ Validators.required ], ],
   },{
     validators: this.passwordsIguales('password', 'password2')
   });
