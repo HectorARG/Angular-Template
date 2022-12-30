@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -13,7 +13,7 @@ declare const google: any;
 })
 export class LoginComponent implements AfterViewInit {
 
-  @ViewChildren('googleBtn', {read: ElementRef}) googleBtn: any;
+  @ViewChild('googleBtn')   googleBtn!: ElementRef;
 
   public formSubmitted: boolean = false;
 
@@ -39,8 +39,8 @@ export class LoginComponent implements AfterViewInit {
       callback: this.handleCredentialResponse
     });
     google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
-      // this.googleBtn.nativeElement,
+      // document.getElementById("buttonDiv"),
+      this.googleBtn.nativeElement,
       { theme: "outline", size: "large" }  // customization attributes
     );
   }
