@@ -24,6 +24,14 @@ export class UsuarioService {
     // this.googleInit();
    }
 
+   get token(): string {
+    return localStorage.getItem('token');
+   }
+
+   get uid(): string {
+    return this.usuario.uid || '';
+   }
+
   googleInit(){
 
     return new Promise<void>( resolve => {
@@ -48,8 +56,10 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean>{
-    const token = localStorage.getItem('token') || '';
-    return this.http.get(`${base_url}/login/renew`, {headers: {'x-token': token}})
+
+
+
+    return this.http.get(`${base_url}/login/renew`, {headers: {'x-token': this.token}})
       .pipe(
         map((res: any) => {
         const { nombre, email, google, img='', role, uid } = res.usuario; //Destructurar el resultado en sus propieaddes
@@ -61,12 +71,21 @@ export class UsuarioService {
   }
 
   crearUsuario( formData: RegisterForm ) {
-
     return this.http.post(`${base_url}/usuarios`, formData).pipe(tap((resp: any) => {
       localStorage.setItem('token', resp.token);
-}));
+    }));
+}
 
+actualizarUsuario(data: { nombre:string, email: string, role: string}){
+
+  data = {
+    ...data,
+    role: this.usuario.role
   }
+
+  return this.http.put(`${base_url}/usuarios/${ this.uid }`, data, {headers: {'x-token': this.token}})
+
+}
 
   loginUsuario( formData: LoginForm ) {
 
