@@ -6,6 +6,7 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { Usuario } from '../models/usuarios.model';
 
 const base_url = environment.base_url;
 
@@ -17,8 +18,10 @@ declare const gapi: any;
 export class UsuarioService {
 
   public auth2: any;
+  public usuario: Usuario;
+
   constructor( private http: HttpClient, private router: Router, private ngZone: NgZone ) {
-    this.googleInit();
+    // this.googleInit();
    }
 
   googleInit(){
@@ -37,19 +40,24 @@ export class UsuarioService {
 
   logout(){
     localStorage.removeItem('token');
-    this.auth2.signOut().then(() => {
-      this.ngZone.run(() => {
+    // this.auth2.signOut().then(() => {
+      // this.ngZone.run(() => {
         this.router.navigateByUrl('/login');
-      })
-    });
+      // })
+    // });
   }
 
   validarToken(): Observable<boolean>{
     const token = localStorage.getItem('token') || '';
     return this.http.get(`${base_url}/login/renew`, {headers: {'x-token': token}})
-      .pipe(tap((res: any) => {
+      .pipe(
+        map((res: any) => {
+        const { nombre, email, google, img='', role, uid } = res.usuario; //Destructurar el resultado en sus propieaddes
+        this.usuario = new Usuario( nombre, email, '', google, img, role, uid );
         localStorage.setItem('token', res.token);
-      }),map(respuesta => true, err => false),catchError(error => of(false)));
+        return true;
+      }),
+      catchError(error => of(false)));
   }
 
   crearUsuario( formData: RegisterForm ) {
