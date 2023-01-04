@@ -13,6 +13,7 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 
 
 
@@ -25,6 +26,7 @@ import { PerfilComponent } from './perfil/perfil.component';
     PagesComponent,
     AccountSettingsComponent,
     PerfilComponent,
+    UsuariosComponent,
   ],
   exports: [
     DashboardComponent,
