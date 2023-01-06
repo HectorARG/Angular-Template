@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterForm } from '../interfaces/register-form.interface.';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form.interface';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuarios.model';
+import { obtenerUsuario } from '../interfaces/cargar-usuarios.interface';
 
 const base_url = environment.base_url;
 
@@ -25,11 +26,19 @@ export class UsuarioService {
    }
 
    get token(): string {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token') || '';
    }
 
    get uid(): string {
     return this.usuario.uid || '';
+   }
+
+   get header(){
+    return {
+      headers: {
+        'x-token': this.token
+      }
+     }
    }
 
   googleInit(){
@@ -101,6 +110,19 @@ actualizarUsuario(data: { nombre:string, email: string, role: string}){
     }));
   }
 
+  obtenerUsuarios(desde: number = 0){
 
+    return this.http.get<obtenerUsuario>(`${base_url}/usuarios?desde=${desde}`, this.header).pipe(
+      // delay(1500),
+      map(resp => {
+        const usuarios = resp.usuarios.map( user => new Usuario(user.nombre, user.email, '', user.google, user.img, user.role, user.uid) )
+        return {
+          total: resp.total,
+          usuarios
+        };
+      })
+    )
+
+  }
 
 }

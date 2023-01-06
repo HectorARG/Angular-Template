@@ -21,6 +21,8 @@ const routes: Routes = [
             { path: 'grafica1', component: Grafica1Component },
             { path: 'account-settings', component: AccountSettingsComponent },
             { path: 'perfil', component: PerfilComponent, data: { titulo: 'Perfil' } },
+
+            //Mantenimientos
             { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Usuarios' } },
         ]
     },

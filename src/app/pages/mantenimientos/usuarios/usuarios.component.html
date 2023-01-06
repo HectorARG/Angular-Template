@@ -1,0 +1,69 @@
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input type="text" class="form-control" [(ngModel)]="datoBusqueda" (keyup)="buscar()" placeholder="Buscar usuario...."/>
+        <br>
+        <br>
+        <button class="btn btn-info" (click)="buscar()">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row animated fadeIn fast" *ngIf="cargando">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere....</p>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!cargando">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Usuarios</h2>
+            <div class="col-12">
+              <h6 class="card-subtitle">Usuarios registrados en el sistema: {{ totalUsuarios }}</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="w100">Avatar</th>
+                            <th>Correo</th>
+                            <th>Nombre</th>
+                            <th class="w100">Role</th>
+                            <th class="w100">Auth</th>
+                            <th class="text-nowrap w100">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of usuarios">
+                            <td><img class="img-avatar-table" [src]="user.imagenUrl"></td>
+                            <td><p>{{ user.email }}</p></td>
+                            <td><p>{{ user.nombre }}</p></td>
+                            <td><p>{{ user.role }}</p></td>
+                            <td>
+                              <span class="label label-danger" *ngIf="user.google">Google</span>
+                              <span class="label label-info" *ngIf="!user.google">Admin</span>
+                            </td>
+                            <td class="text-nowrap text-center">
+                                <a data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                <a data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button (click)="paginacion(-5)" class="btn btn-secondary">Anterior</button>
+            &nbsp;
+            <button (click)="paginacion(5)" class="btn btn-secondary">Siguiente</button>
+
+        </div>
+    </div>
+  </div>
+</div>

@@ -16,14 +16,25 @@ export class Usuario {
 
     get imagenUrl() {
 
-      if( this.img.includes('https') ){
-        return this.img;
-      }
+      // if( !this.img ){
 
-      if( this.img ){
+      //   return `${api_url}/upload/usuarios/no-image`
+
+      // }else
+      if( this.img != undefined &&this.img.includes('https') ){
+console.log('', this.img);
+
+        return this.img;
+
+
+      } else if( this.img ){
+
         return `${api_url}/upload/usuarios/${ this.img }`
-      }else{
+
+      }
+      else{
         return `${api_url}/upload/usuarios/no-image`
+
       }
     }
 }
